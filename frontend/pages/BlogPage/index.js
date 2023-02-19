@@ -32,8 +32,9 @@ export default function BlogPage() {
 
 		})
 	}
+	
 	return (
-		<div className={`bg-[url('/images/addblog5.png')] ${invert} w-full pt-32 ${((user || authtoken || AllBlogs?.data?.length!==0 || Blogs.length!==0) && !AllBlogs.isLoading && !AllBlogs.isError) ? "h-full" : "h-screen"} z-[100] `}>
+		<div className={`bg-[url('/images/addblog5.png')] ${invert} w-full pt-32  ${(user || authtoken)?"h-full":""} ${(!user || !authtoken) && (AllBlogs.isLoading || AllBlogs.isError)?"h-screen":""} ${(!user || !authtoken) && AllBlogs?.data?.results?.length===0?"h-screen":"h-full"}   h-full z-[100] `}>
 
 			<div className=" pb-20 mx-auto">
 				{(user && authtoken) ? (
@@ -45,23 +46,23 @@ export default function BlogPage() {
 
 
 				<div id="blogpage" className='bg-[rgb(31 32 41 / var(--tw-bg-opacity))] pt-32 flex justify-center'>
-					{(AllBlogs?.data?.length == 0 && !AllBlogs.isError) ? (
-						<h1 className='text-center text-white text-3xl font-bold'>No Blogs Available Currently</h1>
-					) : (
-						null
-					)}
+					
 					{(AllBlogs.isError) ? (
 						<h1 className='text-center h-full text-white text-3xl font-bold'>{AllBlogs?.error?.message}</h1>
 					) : (
 						null
 					)}
 					{AllBlogs.isLoading ? (
-						<div className='mx-auto text-center my-20 flex items-center justify-center invert'><GridLoader /></div>
+						<div className='mx-auto text-center my-20 flex items-center justify-center  !h-full !w-full  invert '><GridLoader /></div>
 					) : (
 						null
 					)}
-					
-					{(AllBlogs?.data?.length !== 0 && !AllBlogs.isLoading && !AllBlogs.isError) ? (
+					{(AllBlogs?.data?.results?.length == 0 && Blogs.length==0 && !AllBlogs.isError && !AllBlogs.isLoading && Blogs.length===0) ? (
+						<h1 className='text-center text-white text-3xl font-bold'>No Blogs Available Currently</h1>
+					) : (
+						null
+					)}
+					{(AllBlogs?.data?.results?.length !== 0 && !AllBlogs.isLoading && !AllBlogs.isError) ? (
 						
 							<InfiniteScroll
 									dataLength={Blogs.length} //This is important field to render the next data

@@ -4,6 +4,7 @@ import TextArea from '@/components/TextArea';
 import UpdateBlog from '@/components/UpdateBlog';
 import Context from '@/context/Context';
 import { useQuery, QueryClient, dehydrate, useQueryClient, useMutation } from '@tanstack/react-query';
+import parse from 'html-react-parser';
 import axios from 'axios';
 import { Link, Button, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
 import { Form, Formik } from 'formik';
@@ -103,7 +104,7 @@ export default function BlogID({ cookies }) {
 					<div className="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
 						<img className={`md:h-[600px] mb-10 object-cover object-center rounded ${invert?"invert":""}`} alt="hero" src={EachBlog?.data?.image} />
 						<div className="text-center lg:w-2/3 w-full">
-							<h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-100">{EachBlog?.data?.title}</h1>
+							<h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-100 break-all">{EachBlog?.data?.title}</h1>
 							{(authtoken && user && user.username === EachBlog?.data?.user) ? (
 								<div className='my-8'>
 									<button onClick={() => {
@@ -144,7 +145,7 @@ export default function BlogID({ cookies }) {
 									
 								</div>
 							</div>
-							<p className="mb-8 leading-relaxed text-gray-300 font-bold text-xl">{EachBlog?.data?.desc}</p>
+							<p className="mb-8 leading-relaxed text-gray-300 font-bold text-xl break-all"><div id="desc">{parse(EachBlog?.data?.desc)}</div></p>
 
 						</div>
 					</div>
@@ -197,6 +198,11 @@ export default function BlogID({ cookies }) {
 				</div>
 
 			</Modal>
+			<style jsx>
+				{`
+					
+				`}
+			</style>
 		</div>
 	)
 }
